@@ -1,10 +1,16 @@
-FROM gliderlabs/alpine:3.4
+FROM alpine:3.9 
 
 RUN \
-  apk-install \
+  apk add \
     curl \
+    gcc \
+    g++ \
+    make \
+    libffi-dev \
+    openssl-dev \
     openssh-client \
     python \
+    python-dev \
     py-boto \
     py-dateutil \
     py-httplib2 \
@@ -22,9 +28,19 @@ RUN echo "[local]" >> /etc/ansible/hosts && \
     echo "localhost" >> /etc/ansible/hosts
 
 RUN \
-  curl -fsSL https://releases.ansible.com/ansible/ansible-2.2.2.0.tar.gz -o ansible.tar.gz && \
+  curl -fsSL https://releases.ansible.com/ansible/ansible-2.7.9.tar.gz -o ansible.tar.gz && \
   tar -xzf ansible.tar.gz -C ansible --strip-components 1 && \
   rm -fr ansible.tar.gz /ansible/docs /ansible/examples /ansible/packaging
+
+RUN \
+  apk del \
+    gcc \
+    g++ \
+    make \
+    libffi-dev \
+    openssl-dev \
+    python-dev && \
+  rm -rf /var/cache/apk/*
 
 RUN mkdir -p /ansible/playbooks
 WORKDIR /ansible/playbooks
