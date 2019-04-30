@@ -8,7 +8,7 @@ target:
   privileged: true
 
 test:
-  image: philm/ansible_playbook
+  image: ulihorn/ansible_playbook
   links:
     - target
   volumes:
