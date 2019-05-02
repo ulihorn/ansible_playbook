@@ -37,7 +37,12 @@ RUN \
       python-dev && \
   rm -rf /var/cache/apk/*
 
-RUN mkdir -p /ansible/playbooks
+RUN \
+  sed -i "s/StrictHostKeyChecking.*/StrictHostKeyChecking no/g" /etc/ssh/ssh_config
+
+RUN \
+  mkdir -p /ansible/playbooks
+
 WORKDIR /ansible/playbooks
 
 ENV ANSIBLE_GATHERING smart
